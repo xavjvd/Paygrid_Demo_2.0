@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "117377430863",
+    "firebase_url": "https://pg-demo-9a232.firebaseio.com",
+    "project_id": "pg-demo-9a232",
+    "storage_bucket": "pg-demo-9a232.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117377430863:android:0af82ab0e1a38514",
+        "android_client_info": {
+          "package_name": "com.example.dex.paygrid_demo_20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117377430863-n1te5iosjb7f03k8469j25b8gt09oii2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dex.paygrid_demo_20",
+            "certificate_hash": "4010b48bb489bb6b3a509307429e8e91ec89d81d"
+          }
+        },
+        {
+          "client_id": "117377430863-foudqvc9lqjcr14qohtv86tn9ss2m6op.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3bZBtOV-0m8EVv8ZBZCKWua1TJtjdhhw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117377430863-foudqvc9lqjcr14qohtv86tn9ss2m6op.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

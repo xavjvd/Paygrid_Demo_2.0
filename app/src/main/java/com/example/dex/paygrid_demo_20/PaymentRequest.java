@@ -2,9 +2,9 @@ package com.example.dex.paygrid_demo_20;
 
 public class PaymentRequest {
 
-    String requestId;
+    private String requestId;
     String amount;
-    String paymentcode;
+    private String paymentcode;
 
     public PaymentRequest(){
 
@@ -14,8 +14,6 @@ public class PaymentRequest {
         this.requestId = requestId;
         this.amount = amount;
         this.paymentcode = paymentcode;
-
-
     }
 
     public String getAmount() {

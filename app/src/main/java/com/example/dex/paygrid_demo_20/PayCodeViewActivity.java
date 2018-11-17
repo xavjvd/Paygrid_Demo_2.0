@@ -20,10 +20,15 @@ public class PayCodeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pay_code_view);
 
 
-        code = findViewById(R.id.tvCode);
+        code = findViewById(R.id.tvPayCode);
         amount = findViewById(R.id.tvAmount);
         profile = findViewById(R.id.btnProfile);
 
+        String requestCode = getIntent().getStringExtra("paymentcode");
+        String requestAmount = getIntent().getStringExtra("amount");
+
+        code.setText(requestCode);
+        amount.setText(requestAmount);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override

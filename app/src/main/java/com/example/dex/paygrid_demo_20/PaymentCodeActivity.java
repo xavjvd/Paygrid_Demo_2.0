@@ -107,7 +107,10 @@ public class PaymentCodeActivity extends AppCompatActivity {
                 databaseUser.child("/payment-requests/" + id).setValue(paymentRequest);
 
                 Toast.makeText(this, "PaymentRequest added", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaymentCodeActivity.this, PayCodeViewActivity.class));
+                Intent intent = new Intent(PaymentCodeActivity.this, PayCodeViewActivity.class);
+                intent.putExtra("amount", amount);
+                intent.putExtra("paymentcode", paymentcode);
+                startActivity(intent);
                 finish();
             }
 

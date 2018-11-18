@@ -1,27 +1,13 @@
 package com.example.dex.paygrid_demo_20;
 
 public class PaymentRequest {
+    public String amount;
+    public String paymentCode;
+    public String userID;
 
-    private String requestId;
-    String amount;
-    private String paymentcode;
-
-    public PaymentRequest(){
-
-    }
-
-    public PaymentRequest(String requestId, String amount, String paymentcode){
-        this.requestId = requestId;
+    public PaymentRequest(String userID, String amount, String paymentCode) {
+        this.userID = userID;
         this.amount = amount;
-        this.paymentcode = paymentcode;
+        this.paymentCode = paymentCode;
     }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public  String getPaymentcode() {
-        return paymentcode;
-    }
-
 }

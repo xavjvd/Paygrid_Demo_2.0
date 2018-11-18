@@ -33,12 +33,7 @@ public class PaymentCodeActivity extends AppCompatActivity {
     Button generate;
     Button payrequest;
     ProgressDialog progressDialog;
-
-    //Firebase
-    DatabaseReference databaseUser;
-    FirebaseAuth mAuth;
-
-    FirebaseUser user;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,31 +47,7 @@ public class PaymentCodeActivity extends AppCompatActivity {
         payrequest = findViewById(R.id.btnRequestPayment);
         progressDialog = new ProgressDialog(this);
 
-        //initializing firebase authentication object
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(user.getEmail());
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        //if (item.child("/phone").toString().equals(user.getPhoneNumber())) { // can't use this because phone is not registered in firebaseAuth
-                            Log.e(TAG, item.getValue().toString());
-                            databaseUser = item.getRef();
-                        //}
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        userID = getIntent().getStringExtra("userID");
 
         payrequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,12 +58,17 @@ public class PaymentCodeActivity extends AppCompatActivity {
     }
 
     public void generate(View view) {
-        Random rand = new Random();
-        int number = rand.nextInt(10000);
         TextView code = findViewById(R.id.tvCode);
-        String myString = String.valueOf(number);
-        code.setText(myString);
+        String chars = "0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
+        int length = 10;
+        final Random random = new Random();
+        final StringBuilder sb = new StringBuilder(length);
 
+        for (int i = 0; i < length; ++i) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+        code.setText(sb.toString());
     }
 
     private void addPaymentRequest() {
@@ -101,19 +77,15 @@ public class PaymentCodeActivity extends AppCompatActivity {
         String paymentcode = paymentCode.getText().toString().trim();
 
         if (!TextUtils.isEmpty(amount)) {
-            if (databaseUser != null) {
-                String id = databaseUser.child("/payment-requests").push().getKey();
-                PaymentRequest paymentRequest = new PaymentRequest(id, amount, paymentcode);
-                databaseUser.child("/payment-requests/" + id).setValue(paymentRequest);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("PaymentRequests");
+            ref.push().setValue(new PaymentRequest(userID, amount, paymentcode));
 
-                Toast.makeText(this, "PaymentRequest added", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(PaymentCodeActivity.this, PayCodeViewActivity.class);
-                intent.putExtra("amount", amount);
-                intent.putExtra("paymentcode", paymentcode);
-                startActivity(intent);
-                finish();
-            }
-
+            Toast.makeText(this, "PaymentRequest added", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(PaymentCodeActivity.this, PayCodeViewActivity.class);
+            intent.putExtra("amount", amount);
+            intent.putExtra("paymentcode", paymentcode);
+            startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Please enter Amount", Toast.LENGTH_LONG).show();
         }

@@ -85,25 +85,25 @@ public class ProfileDetailsActivity extends AppCompatActivity {
 
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
-            User uInfo = new User();
-            uInfo.setName(ds.child(userID).getValue(User.class).getName()); //set the name
-            uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //set the email
-            uInfo.setPhone(ds.child(userID).getValue(User.class).getPhone()); //set the phone_num
-            uInfo.setBalance(ds.child(userID).getValue(User.class).getBalance()); //set the balance
-
-            //display all the information
-            Log.d(TAG, "showData: name: " + uInfo.getName());
-            Log.d(TAG, "showData: email: " + uInfo.getEmail());
-            Log.d(TAG, "showData: phone_num: " + uInfo.getPhone());
-            Log.d(TAG, "showData: balance: " + uInfo.getBalance());
-
-            ArrayList<String> array  = new ArrayList<>();
-            array.add(uInfo.getName());
-            array.add(uInfo.getEmail());
-            array.add(uInfo.getPhone());
-            array.add(uInfo.getBalance());
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array);
-            mListview.setAdapter(adapter);
+//            User uInfo = new User();
+//            uInfo.setName(ds.child(userID).getValue(User.class).getName()); //set the name
+//            uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //set the email
+//            uInfo.setPhone(ds.child(userID).getValue(User.class).getPhone()); //set the phone_num
+//            uInfo.setBalance(ds.child(userID).getValue(User.class).getBalance()); //set the balance
+//
+//            //display all the information
+//            Log.d(TAG, "showData: name: " + uInfo.getName());
+//            Log.d(TAG, "showData: email: " + uInfo.getEmail());
+//            Log.d(TAG, "showData: phone_num: " + uInfo.getPhone());
+//            Log.d(TAG, "showData: balance: " + uInfo.getBalance());
+//
+//            ArrayList<String> array  = new ArrayList<>();
+//            array.add(uInfo.getName());
+//            array.add(uInfo.getEmail());
+//            array.add(uInfo.getPhone());
+//            array.add(uInfo.getBalance());
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array);
+//            mListview.setAdapter(adapter);
         }
     }
 

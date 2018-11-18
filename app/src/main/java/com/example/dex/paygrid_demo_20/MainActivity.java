@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -56,13 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth.getCurrentUser() != null) {
-            //handle the already login user
-        }
-    }
     private void registerUser() {
         final String name = editTextName.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
@@ -100,11 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editTextPhone.requestFocus();
             return;
         }
-        if (phone.length() != 7) {
-            editTextPhone.setError("Invalid Phone");
-            editTextPhone.requestFocus();
-            return;
-        }
 
         String code = CountryData.countryAreaCodes[spinner.getSelectedItemPosition()];
         String number = editTextPhone.getText().toString().trim();
@@ -113,46 +103,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editTextPhone.requestFocus();
             return;
         }
-        String phoneNumber = "+" + code + number;
 
-        Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
-        intent.putExtra("phonenumber", phoneNumber);
-        startActivity(intent);
+        final String phoneNumber = "+" + code + number;
 
         progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            User user = new User(
-                                    name,
-                                    email,
-                                    phone
-                            );
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    progressBar.setVisibility(View.GONE);
-                                    if (task.isSuccessful()) {
-                                        //finish();???
-                                        finish();
-                                        Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
 
-                                    } else {
-                                        //display a failure message
-                                        Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-                                    }
+                    FirebaseDatabase.getInstance().getReference("Users")
+                            .child(user.getUid())
+                            .setValue(new User(name, email, phone));
 
-                                }
-                            });
-                        } else {
-                            Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
+                    intent.putExtra("phonenumber", phoneNumber);
+                    startActivity(intent);
+
+                    finish();
+                } else {
+                    //display a failure message
+                    Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

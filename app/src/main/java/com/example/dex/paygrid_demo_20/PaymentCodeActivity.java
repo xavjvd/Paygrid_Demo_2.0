@@ -59,8 +59,8 @@ public class PaymentCodeActivity extends AppCompatActivity {
 
     public void generate(View view) {
         TextView code = findViewById(R.id.tvCode);
-        String chars = "0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
-        int length = 10;
+        String chars = "0123456789";
+        int length = 4;
         final Random random = new Random();
         final StringBuilder sb = new StringBuilder(length);
 
